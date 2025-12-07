@@ -790,41 +790,29 @@ class RetroRadioApp {
         Components.toggleRadioPowerVisual(this.selectedDecade, this.radioPowerOn);
         
         if (this.radioPowerOn) {
-            // Turn on - resume playback from calculated broadcast position
-            if (this.currentStation && this.stationStates[this.currentStation.id]) {
-                const state = this.stationStates[this.currentStation.id];
-                const elapsedMs = Date.now() - (state.powerOffTime || Date.now());
-                const elapsedSec = elapsedMs / 1000;
-                
-                console.log(`[App] Power on: elapsed ${elapsedSec.toFixed(1)}s, saved position ${state.trackPositionSeconds.toFixed(1)}s`);
-                
-                // Calculate new position based on elapsed time
-                // Use saved track position directly, don't try to advance tracks
-                let newPosition = (state.trackPositionSeconds || 0) + elapsedSec;
-                
-                // Cap at a reasonable max (5 minutes) to avoid seeking past track end
-                // The actual seek will clamp to track duration
-                newPosition = newPosition % 300; // Wrap around every 5 minutes
-                
-                console.log(`[App] Seeking to position: ${newPosition.toFixed(1)}s`);
-                
-                // Store seek position for playCurrentTrack to use
-                this.seekToPosition = newPosition;
-                await this.startBroadcast();
+            // Turn on - resume playback from where we left off
+            if (this.isPlaying === false && this.audio.mainAudio?.src) {
+                // Simply resume the paused audio
+                await this.audio.resume();
+                this.isPlaying = true;
+                this.startRetroVisualization();
+                console.log('[App] Power on: resumed playback');
             } else if (this.currentStation) {
+                // No audio was playing, start fresh
                 await this.startBroadcast();
+                this.startRetroVisualization();
             }
-            // Start visualization
-            this.startRetroVisualization();
         } else {
-            // Turn off - save current position and timestamp
+            // Turn off - just pause, don't reset position
             if (this.currentStation && this.stationStates[this.currentStation.id]) {
                 const currentPosition = this.audio.mainAudio?.currentTime || 0;
                 this.stationStates[this.currentStation.id].trackPositionSeconds = currentPosition;
                 this.stationStates[this.currentStation.id].powerOffTime = Date.now();
                 this.stationStates[this.currentStation.id].lastLeftTime = Date.now();
+                console.log('[App] Power off: saved position', currentPosition.toFixed(1));
             }
-            this.stopPlayback();
+            this.audio.pause();
+            this.isPlaying = false;
             // Stop visualization
             if (this.visualizationAnimationId) {
                 cancelAnimationFrame(this.visualizationAnimationId);
@@ -1093,31 +1081,12 @@ class RetroRadioApp {
         // Build stream URL
         const streamUrl = `${CONFIG.API_BASE_URL}/music/stream/${track.stationId}/${track.filename}`;
         
-        // Play track
-        await this.audio.playTrack(streamUrl);
+        // Check if we need to seek to a saved position
+        const seekPosition = this.seekToPosition;
+        this.seekToPosition = null; // Clear immediately to prevent double-seeking
         
-        // Seek to saved position if we're restoring state
-        if (this.seekToPosition && this.seekToPosition > 0) {
-            // Wait for audio to be loaded enough to seek
-            const seekPosition = this.seekToPosition;
-            this.seekToPosition = null; // Clear immediately to prevent double-seeking
-            
-            const attemptSeek = () => {
-                if (this.audio.mainAudio && this.audio.mainAudio.duration > 0) {
-                    const seekTo = Math.min(seekPosition, this.audio.mainAudio.duration - 5);
-                    if (seekTo > 0) {
-                        this.audio.mainAudio.currentTime = seekTo;
-                        console.log(`[App] Seeked to ${seekTo.toFixed(1)}s (continuous broadcast)`);
-                    }
-                } else {
-                    // Try again in 200ms if duration not ready
-                    setTimeout(attemptSeek, 200);
-                }
-            };
-            
-            // Start attempting to seek after a brief delay
-            setTimeout(attemptSeek, 300);
-        }
+        // Play track
+        await this.audio.playTrack(streamUrl, seekPosition);
         
         console.log(`[App] Now playing: ${trackInfo.title} - ${trackInfo.artist}`);
     }

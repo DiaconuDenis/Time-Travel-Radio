@@ -26,6 +26,7 @@ class AudioSystem {
         
         this.onTrackEnd = null;
         this.onDJEnd = null;
+        this.onEarlySongStart = null;
         
         this.init();
     }
@@ -109,8 +110,10 @@ class AudioSystem {
     
     /**
      * Play music track
+     * @param {string} url - URL of the track to play
+     * @param {number} seekPosition - Optional position in seconds to seek to after loading
      */
-    async playTrack(url) {
+    async playTrack(url, seekPosition = null) {
         try {
             // Initialize Web Audio on first play
             this.initWebAudio();
@@ -124,6 +127,19 @@ class AudioSystem {
                 console.log('[Audio] Starting track at ducked volume (DJ talking)');
             } else {
                 this.mainAudio.volume = this.volume;
+            }
+            
+            // Set up seek handler if position was provided
+            if (seekPosition && seekPosition > 0) {
+                const handleLoadedMetadata = () => {
+                    this.mainAudio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+                    const seekTo = Math.min(seekPosition, this.mainAudio.duration - 5);
+                    if (seekTo > 0) {
+                        this.mainAudio.currentTime = seekTo;
+                        console.log(`[Audio] Seeked to ${seekTo.toFixed(1)}s (continuous broadcast)`);
+                    }
+                };
+                this.mainAudio.addEventListener('loadedmetadata', handleLoadedMetadata);
             }
             
             await this.mainAudio.play();
@@ -294,6 +310,31 @@ class AudioSystem {
         this.djAudio.currentTime = 0;
         this.isPlaying = false;
         this.stopVisualizer();
+    }
+    
+    /**
+     * Pause audio without resetting position (for power off)
+     */
+    pause() {
+        this.mainAudio.pause();
+        this.djAudio.pause();
+        this.isPlaying = false;
+        this.stopVisualizer();
+    }
+    
+    /**
+     * Resume audio from current position (for power on)
+     */
+    async resume() {
+        try {
+            await this.resumeContext();
+            await this.mainAudio.play();
+            this.isPlaying = true;
+            this.startVisualizer();
+            console.log('[Audio] Resumed playback at position:', this.mainAudio.currentTime.toFixed(1));
+        } catch (error) {
+            console.error('Error resuming audio:', error);
+        }
     }
     
     /**

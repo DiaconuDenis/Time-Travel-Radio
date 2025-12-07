@@ -20,23 +20,6 @@ npm-debug.log*
 # Music files (optional - uncomment if you don't want to commit music)
 # music/
 
-# Large presentation files
-*.pptx
-*.ppt
-*.pdf
-
-# Video files
-*.mp4
-*.avi
-*.mov
-*.mkv
-
-# Archive files
-*.zip
-*.rar
-*.7z
-*.tar.gz
-
 # Build files
 dist/
 build/

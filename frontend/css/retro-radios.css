@@ -297,6 +297,11 @@
     box-shadow: 0 0 10px #FFB000, 0 0 20px rgba(255, 176, 0, 0.5);
 }
 
+.radio-70s.power-off .power-led-70s {
+    background: #333;
+    box-shadow: none;
+}
+
 .radio-70s-header .model-name {
     font-size: 1.1rem;
     font-weight: bold;
