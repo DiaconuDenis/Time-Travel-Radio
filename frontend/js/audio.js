@@ -784,6 +784,119 @@ class AudioSystem {
     }
     
     /**
+     * Play flashback/rewind sound effect for returning to present
+     * Features quick pops building up to a big flash whoosh
+     */
+    playFlashbackSound(duration = 2.2) {
+        if (!this.audioContext) {
+            this.initWebAudio();
+        }
+        if (!this.audioContext) return;
+        
+        const sampleRate = this.audioContext.sampleRate;
+        const bufferSize = sampleRate * duration;
+        const buffer = this.audioContext.createBuffer(2, bufferSize, sampleRate);
+        
+        for (let channel = 0; channel < 2; channel++) {
+            const data = buffer.getChannelData(channel);
+            for (let i = 0; i < bufferSize; i++) {
+                const t = i / sampleRate;
+                const progress = i / bufferSize;
+                
+                // Three quick flash pops (at 5%, 16%, 26% of duration)
+                let pop = 0;
+                const flashTimes = [0.05, 0.16, 0.26];
+                const flashIntensities = [0.3, 0.5, 0.7];
+                for (let f = 0; f < flashTimes.length; f++) {
+                    const flashTime = flashTimes[f] * duration;
+                    const timeDiff = Math.abs(t - flashTime);
+                    if (timeDiff < 0.04) {
+                        const flashProgress = timeDiff / 0.04;
+                        const popFreq = 2000 + f * 500;
+                        pop += Math.sin(2 * Math.PI * popFreq * timeDiff) 
+                             * Math.exp(-timeDiff * 80) 
+                             * flashIntensities[f];
+                    }
+                }
+                
+                // Build up tension before big flash (35-50% of duration)
+                let buildUp = 0;
+                if (progress >= 0.35 && progress <= 0.50) {
+                    const buildProgress = (progress - 0.35) / 0.15;
+                    const buildFreq = 200 + buildProgress * 1500;
+                    buildUp = Math.sin(2 * Math.PI * buildFreq * t) * buildProgress * 0.4;
+                }
+                
+                // BIG FLASH swoosh (50-65% of duration)
+                let bigFlash = 0;
+                if (progress >= 0.50 && progress <= 0.65) {
+                    const flashProgress = (progress - 0.50) / 0.15;
+                    // Descending frequency sweep for the big flash
+                    const flashFreq = 3000 - flashProgress * 2500;
+                    bigFlash = Math.sin(2 * Math.PI * flashFreq * (t - 0.50 * duration)) * 0.6;
+                    // Add bright high frequencies
+                    bigFlash += Math.sin(2 * Math.PI * 5000 * (t - 0.50 * duration)) 
+                              * Math.exp(-flashProgress * 3) * 0.3;
+                }
+                
+                // Ethereal shimmer throughout
+                const shimmer = Math.sin(2 * Math.PI * (4000 + Math.sin(t * 15) * 800) * t) 
+                              * Math.exp(-progress * 1.5) * 0.12;
+                
+                // Temporal distortion crackle - intensifies before big flash
+                let crackleChance = 0.003;
+                if (progress >= 0.35 && progress <= 0.50) {
+                    crackleChance = 0.015;
+                }
+                const crackle = Math.random() < crackleChance ? (Math.random() * 2 - 1) * 0.3 : 0;
+                
+                // Rushing wind after big flash
+                let wind = 0;
+                if (progress > 0.50) {
+                    const windProgress = (progress - 0.50) / 0.50;
+                    wind = (Math.random() * 2 - 1) * 0.15 * Math.exp(-windProgress * 2);
+                }
+                
+                // Overall envelope
+                let envelope = 1.0;
+                if (progress < 0.35) {
+                    // During small flashes
+                    envelope = 0.8;
+                } else if (progress >= 0.50 && progress <= 0.65) {
+                    // During big flash - maximum volume
+                    envelope = 1.2;
+                } else {
+                    // Fade out after big flash
+                    envelope = 1.0 - (progress - 0.65) / 0.35 * 0.8;
+                }
+                
+                // Add channel offset for stereo effect
+                const channelOffset = channel === 0 ? 0 : Math.PI / 4;
+                const stereo = Math.sin(2 * Math.PI * 0.5 * t + channelOffset) * 0.08;
+                
+                data[i] = (pop + buildUp + bigFlash + shimmer + crackle + wind + stereo) * envelope;
+            }
+        }
+        
+        const source = this.audioContext.createBufferSource();
+        source.buffer = buffer;
+        
+        // Band pass filter for dreamy, nostalgic tone
+        const filter = this.audioContext.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 2000;
+        filter.Q.value = 0.7;
+        
+        const gainNode = this.audioContext.createGain();
+        gainNode.gain.setValueAtTime(0.5, this.audioContext.currentTime);
+        
+        source.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        source.start();
+    }
+    
+    /**
      * Play button press sound (crisp metallic click)
      */
     playButtonSound() {

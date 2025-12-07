@@ -763,8 +763,15 @@ class RetroRadioApp {
             await this.loadPlaylist(stationId);
         }
         
-        // Start playing
+        // Start playing first (music is priority!)
         await this.startBroadcast();
+        
+        // Then play station introduction in background (don't block music)
+        if (!restored) {
+            this.triggerDJTalk('station_intro').catch(err => {
+                console.log('[App] Station intro failed, continuing with music:', err.message);
+            });
+        }
         
         // Start audio visualization
         this.startRetroVisualization();
@@ -1136,18 +1143,24 @@ class RetroRadioApp {
         this.playlistIndex++;
         this.djTalkCounter++;
         
+        console.log(`[App] Track ended. DJ Talk Counter: ${this.djTalkCounter}`);
+        
         // Update station state
         if (this.currentStation) {
             this.updateStationState(this.currentStation.id);
         }
         
         // Decide if DJ should talk
-        const shouldDJTalk = this.djTalkCounter >= Utils.getRandomInt(
+        const talkThreshold = Utils.getRandomInt(
             CONFIG.DJ_TALK_CONFIG.minSongsBetweenTalk,
             CONFIG.DJ_TALK_CONFIG.maxSongsBetweenTalk
         );
+        const shouldDJTalk = this.djTalkCounter >= talkThreshold;
+        
+        console.log(`[App] Should DJ talk? ${shouldDJTalk} (counter: ${this.djTalkCounter}, threshold: ${talkThreshold})`);
         
         if (shouldDJTalk) {
+            console.log('[App] Triggering DJ talk...');
             await this.triggerDJTalk('track_transition');
             this.djTalkCounter = 0;
         } else {
@@ -1406,17 +1419,39 @@ class RetroRadioApp {
             this.visualizationAnimationId = null;
         }
         
-        // No sound when returning - cleaner transition
+        // Play flashback sound effect
+        if (this.audio) {
+            this.audio.playFlashbackSound(2.2);
+        }
         
-        // Hide retro radio page
-        document.getElementById('retro-radio-page')?.classList.remove('active');
+        // Trigger flashback animation
+        const flashOverlay = document.querySelector('.time-flash');
+        const vignetteOverlay = document.createElement('div');
+        vignetteOverlay.className = 'flashback-vignette';
+        document.body.appendChild(vignetteOverlay);
         
-        // Show landing page
-        document.getElementById('landing-page')?.classList.add('active');
-        this.currentPage = 'landing-page';
+        if (flashOverlay) {
+            flashOverlay.classList.add('flashback');
+            
+            // Remove animation class after it completes
+            setTimeout(() => {
+                flashOverlay.classList.remove('flashback');
+                vignetteOverlay.remove();
+            }, 2200);
+        }
         
-        // Reset theme
-        document.body.dataset.theme = 'time-machine';
+        // Delay page transition to sync with BIG FLASH peak (at 50% = 1100ms)
+        setTimeout(() => {
+            // Hide retro radio page
+            document.getElementById('retro-radio-page')?.classList.remove('active');
+            
+            // Show landing page
+            document.getElementById('landing-page')?.classList.add('active');
+            this.currentPage = 'landing-page';
+            
+            // Reset theme
+            document.body.dataset.theme = 'time-machine';
+        }, 1100); // Transition during BIG FLASH
         
         // Reset time machine state
         this.resetTimeMachine();

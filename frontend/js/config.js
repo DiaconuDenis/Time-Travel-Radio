@@ -70,7 +70,7 @@ const CONFIG = {
     // DJ Talk Schedule Configuration
     DJ_TALK_CONFIG: {
         minSongsBetweenTalk: 1,  // Minimum songs between DJ talk
-        maxSongsBetweenTalk: 3,  // Maximum songs between DJ talk
+        maxSongsBetweenTalk: 1,  // Maximum songs between DJ talk - DJ talks after EVERY song
         talkDuration: {
             min: 15,  // seconds
             max: 45   // seconds

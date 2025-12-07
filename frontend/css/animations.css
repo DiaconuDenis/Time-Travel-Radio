@@ -45,6 +45,162 @@
     100% { opacity: 0; }
 }
 
+/* Flashback effect for returning to present - Quick flashes then BIG flash */
+.time-flash.flashback {
+    animation: flashbackEffect 2.2s ease-in-out forwards;
+}
+
+@keyframes flashbackEffect {
+    /* First small flash */
+    0% { 
+        opacity: 0; 
+        background: #000000;
+        transform: scale(1);
+    }
+    5% { 
+        opacity: 0.4; 
+        background: #ffffff;
+        transform: scale(1.01);
+    }
+    8% { 
+        opacity: 0; 
+        background: #000000;
+        transform: scale(1);
+    }
+    
+    /* Second small flash - brighter */
+    12% { 
+        opacity: 0; 
+        background: #000000;
+        transform: scale(1);
+    }
+    16% { 
+        opacity: 0.6; 
+        background: #ffffee;
+        transform: scale(1.02);
+    }
+    19% { 
+        opacity: 0; 
+        background: #000000;
+        transform: scale(1);
+    }
+    
+    /* Third small flash - even brighter */
+    23% { 
+        opacity: 0; 
+        background: #000000;
+        transform: scale(1);
+    }
+    26% { 
+        opacity: 0.75; 
+        background: #ffffcc;
+        transform: scale(1.03);
+    }
+    29% { 
+        opacity: 0; 
+        background: #000000;
+        transform: scale(1);
+    }
+    
+    /* Brief pause before BIG flash */
+    32% { 
+        opacity: 0; 
+        background: #000000;
+        transform: scale(1);
+    }
+    
+    /* Building up to BIG flash */
+    35% { 
+        opacity: 0.2; 
+        background: radial-gradient(circle, #ffffff 20%, #000000 100%);
+        transform: scale(1.02);
+    }
+    38% { 
+        opacity: 0.4; 
+        background: radial-gradient(circle, #ffffff 30%, #111111 100%);
+        transform: scale(1.05);
+    }
+    42% { 
+        opacity: 0.6; 
+        background: radial-gradient(circle, #ffffee 40%, #222222 100%);
+        transform: scale(1.08);
+    }
+    
+    /* THE BIG FLASH */
+    50% { 
+        opacity: 1; 
+        background: #ffffff;
+        transform: scale(1.15);
+    }
+    
+    /* Hold the bright flash */
+    58% { 
+        opacity: 1; 
+        background: #ffffff;
+        transform: scale(1.12);
+    }
+    
+    /* Slowly fade out the big flash */
+    68% { 
+        opacity: 0.95; 
+        background: radial-gradient(circle, #ffffff 80%, #f8f8f8 100%);
+        transform: scale(1.08);
+    }
+    78% { 
+        opacity: 0.85; 
+        background: radial-gradient(circle, #fffff0 70%, #f0f0f0 100%);
+        transform: scale(1.04);
+    }
+    88% { 
+        opacity: 0.5; 
+        background: radial-gradient(circle, #ffffff 60%, #e0e0e0 100%);
+        transform: scale(1.02);
+    }
+    95% { 
+        opacity: 0.2; 
+        background: #fafafa;
+        transform: scale(1);
+    }
+    100% { 
+        opacity: 0; 
+        background: #ffffff;
+        transform: scale(1);
+    }
+}
+
+/* Screen vignette pulse during flashback */
+.flashback-vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+    opacity: 0;
+    z-index: 9998;
+    pointer-events: none;
+    animation: vignettePulse 2.2s ease-in-out forwards;
+}
+
+@keyframes vignettePulse {
+    /* Pulsing during small flashes */
+    0%, 8%, 12%, 19%, 23%, 29%, 32% { opacity: 0; }
+    5%, 16%, 26% { opacity: 0.6; }
+    
+    /* Build up during big flash */
+    35% { opacity: 0.7; }
+    42% { opacity: 0.85; }
+    
+    /* Peak during big flash */
+    50%, 58% { opacity: 1; }
+    
+    /* Fade out */
+    68% { opacity: 0.8; }
+    78% { opacity: 0.5; }
+    88% { opacity: 0.2; }
+    100% { opacity: 0; }
+}
+
 /* Lightning overlay container */
 .lightning-overlay {
     position: absolute;

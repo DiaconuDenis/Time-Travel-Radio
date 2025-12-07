@@ -31,7 +31,7 @@ class AIHostService {
             let userPrompt = this.buildContextPrompt(context);
 
             const completion = await getOpenAI().chat.completions.create({
-                model: 'gpt-4',
+                model: 'gpt-3.5-turbo',
                 messages: [
                     {
                         role: 'system',
@@ -139,6 +139,9 @@ class AIHostService {
             
             case 'track_intro':
                 return `Introduce the next song: "${trackTitle}" by ${trackArtist}. Share a quick fun fact or interesting tidbit about the song or artist. Keep it SHORT (1-2 sentences) and exciting!`;
+            
+            case 'station_intro':
+                return `Welcome listeners to your station! Introduce yourself, mention what decade and music genre you're playing, and get them excited for the vibes ahead. Share 1-2 fun facts about the era. Keep it CONCISE (3-4 sentences max) but energetic and welcoming!`;
             
             case 'station_id':
                 return `Do a quick station identification! Remind listeners what station they're on. Keep it SHORT and punchy!`;
