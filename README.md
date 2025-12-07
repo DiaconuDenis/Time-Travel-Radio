@@ -1,22 +1,22 @@
-# 🕰️ Time Travel Radio
+#  Time Travel Radio
 
 A nostalgic web application that lets you experience radio broadcasting from different decades (70s, 80s, 90s) with authentic retro interfaces, AI-powered DJ hosts, and period-accurate music.
 
 ![Time Travel Radio](frontend/assets/retro_radio.ico)
 
-## ✨ Features
+##  Features
 
 - **DeLorean-style Time Machine Interface** - Select your decade with authentic toggle switches and safety controls
 - **Decade-Specific Radio Designs**:
-  - 🕺 **70s**: Wood-paneled Hi-Fi receiver with FM buttons and large speaker
-  - 🎹 **80s**: Synthwave LED display with spectrum analyzer and neon aesthetics
-  - 💿 **90s**: LCD Boombox with CD player visuals and wave bars
+  -  **70s**: Wood-paneled Hi-Fi receiver with FM buttons and large speaker
+  -  **80s**: Synthwave LED display with spectrum analyzer and neon aesthetics
+  -  **90s**: LCD Boombox with CD player visuals and wave bars
 - **AI DJ Hosts** - Each station has its own AI-powered DJ that introduces songs and provides period-accurate banter
 - **Authentic Audio** - Music streaming with proper ducking during DJ speech
 - **Visual Effects** - Disco lights (70s), lava lamp effects (80s), and era-specific backgrounds
 - **Continuous Broadcasting** - Stations continue playing even when you switch or turn off the radio
 
-## 🚀 Getting Started
+## 🚀Getting Started
 
 ### Prerequisites
 
@@ -45,7 +45,7 @@ A nostalgic web application that lets you experience radio broadcasting from dif
    OPENAI_API_KEY=your_openai_api_key_here
    ```
    
-   ⚠️ **Important**: Replace `your_openai_api_key_here` with your actual OpenAI API key. You can get one from [OpenAI's Platform](https://platform.openai.com/api-keys).
+    **Important**: Replace `your_openai_api_key_here` with your actual OpenAI API key. You can get one from [OpenAI's Platform](https://platform.openai.com/api-keys).
 
 4. **Add your music files**
    
@@ -81,7 +81,7 @@ A nostalgic web application that lets you experience radio broadcasting from dif
    
    Open `frontend/index.html` in your browser, or use a local server like Live Server in VS Code.
 
-## 🎮 How to Use
+##  How to Use
 
 1. **Select a Decade** - Click one of the three toggle switches (70s, 80s, 90s)
 2. **Arm the Time Machine** - Lift the safety cover
@@ -97,7 +97,7 @@ A nostalgic web application that lets you experience radio broadcasting from dif
 - **AI**: OpenAI GPT-4 for DJ banter, OpenAI TTS for voice synthesis
 - **Audio**: Web Audio API for visualizations and effects
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 Time-Travel-Radio/
@@ -117,7 +117,7 @@ Time-Travel-Radio/
 └── README.md
 ```
 
-## ⚙️ Configuration
+##  Configuration
 
 ### Environment Variables
 
@@ -133,15 +133,15 @@ You can adjust audio settings in `frontend/js/config.js`:
 - `djVolumeBoost`: DJ voice boost multiplier
 - `crossfadeDuration`: Track crossfade duration in ms
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Feel free to submit issues and pull requests.
 
-## 📄 License
+##  License
 
 This project is for educational and personal use.
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - Inspired by Back to the Future's DeLorean time machine
 - Billboard chart data from historical records
