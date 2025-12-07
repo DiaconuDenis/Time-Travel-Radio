@@ -490,6 +490,38 @@ const Components = {
                         <span class="model-number">MODEL TA-1975</span>
                     </div>
 
+                    <!-- VU Meters -->
+                    <div class="vu-meters-70s">
+                        <div class="vu-meter-70s">
+                            <div class="meter-face">
+                                <div class="meter-scale">
+                                    <span>-20</span>
+                                    <span>-10</span>
+                                    <span>-5</span>
+                                    <span>0</span>
+                                    <span class="danger">+3</span>
+                                </div>
+                                <span class="vu-text">VU</span>
+                                <div class="meter-needle" id="vu-needle-left"></div>
+                            </div>
+                            <div class="meter-label">L</div>
+                        </div>
+                        <div class="vu-meter-70s">
+                            <div class="meter-face">
+                                <div class="meter-scale">
+                                    <span>-20</span>
+                                    <span>-10</span>
+                                    <span>-5</span>
+                                    <span>0</span>
+                                    <span class="danger">+3</span>
+                                </div>
+                                <span class="vu-text">VU</span>
+                                <div class="meter-needle" id="vu-needle-right"></div>
+                            </div>
+                            <div class="meter-label">R</div>
+                        </div>
+                    </div>
+
                     <!-- FM Station Buttons -->
                     <div class="station-presets-70s">
                         ${presetButtons}

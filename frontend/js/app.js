@@ -840,9 +840,25 @@ class RetroRadioApp {
             const audioData = this.audio.getFrequencyData();
             
             if (this.selectedDecade === '70s') {
-                // Animate VU meters
-                const leftLevel = audioData ? audioData[0] / 255 : Math.random() * 0.3 + 0.3;
-                const rightLevel = audioData ? audioData[1] / 255 : Math.random() * 0.3 + 0.3;
+                // Animate VU meters with better frequency sampling
+                let leftLevel, rightLevel;
+                if (audioData && audioData.length > 0) {
+                    // Sample low-mid frequencies for left (bass/mids)
+                    const leftSamples = Array.from(audioData).slice(0, 32);
+                    const leftAvg = leftSamples.reduce((a, b) => a + b, 0) / leftSamples.length / 255;
+                    
+                    // Sample mid-high frequencies for right (mids/highs)  
+                    const rightSamples = Array.from(audioData).slice(32, 64);
+                    const rightAvg = rightSamples.reduce((a, b) => a + b, 0) / rightSamples.length / 255;
+                    
+                    // Add some variation between channels
+                    leftLevel = Math.min(1, leftAvg * 1.5 + Math.random() * 0.05);
+                    rightLevel = Math.min(1, rightAvg * 1.5 + Math.random() * 0.05);
+                } else {
+                    // Idle animation when no audio data
+                    leftLevel = 0.15 + Math.random() * 0.1;
+                    rightLevel = 0.15 + Math.random() * 0.1;
+                }
                 Components.animateVUMeters(leftLevel, rightLevel);
             } else if (this.selectedDecade === '80s') {
                 // Animate spectrum analyzer

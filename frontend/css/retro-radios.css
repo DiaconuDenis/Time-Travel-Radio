@@ -316,80 +316,172 @@
     letter-spacing: 1px;
 }
 
-/* VU Meters Section */
+/* VU Meters Section - Classic Analog Style */
 .vu-meters-70s {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin-bottom: 20px;
+    gap: 15px;
+    margin-bottom: 15px;
 }
 
 .vu-meter-70s {
-    width: 180px;
-    height: 100px;
-    background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
-    border-radius: 8px;
-    border: 2px solid #404040;
-    padding: 10px;
-    position: relative;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .vu-meter-70s .meter-face {
-    width: 100%;
-    height: 100%;
+    width: 120px;
+    height: 65px;
     background: 
-        radial-gradient(ellipse at bottom, 
-            rgba(255, 176, 0, 0.1) 0%, 
-            transparent 70%),
-        linear-gradient(180deg, #f5f0e0 0%, #e8e0c8 100%);
-    border-radius: 4px;
+        radial-gradient(ellipse 80% 50% at 50% 90%, rgba(255,200,100,0.3) 0%, transparent 50%),
+        linear-gradient(180deg, #fffef5 0%, #f5f0dc 30%, #ebe5c8 100%);
+    border-radius: 4px 4px 2px 2px;
     position: relative;
     overflow: hidden;
+    border: 2px solid #1a1510;
+    box-shadow: 
+        inset 0 0 15px rgba(0,0,0,0.1),
+        inset 0 -2px 5px rgba(0,0,0,0.05),
+        0 2px 4px rgba(0,0,0,0.4);
 }
 
+/* Warm backlight glow when ON */
+.radio-70s.power-on .vu-meter-70s .meter-face {
+    background: 
+        radial-gradient(ellipse 80% 50% at 50% 90%, rgba(255,180,80,0.5) 0%, transparent 50%),
+        linear-gradient(180deg, #fffef5 0%, #f5f0dc 30%, #ebe5c8 100%);
+}
+
+/* Scale markings container */
 .vu-meter-70s .meter-scale {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    height: 30px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.6rem;
-    color: #333;
-    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
 }
+
+/* Individual scale numbers positioned along arc */
+.vu-meter-70s .meter-scale span {
+    position: absolute;
+    font-size: 7px;
+    color: #222;
+    font-weight: 600;
+    font-family: 'Arial Narrow', Arial, sans-serif;
+}
+
+.vu-meter-70s .meter-scale span:nth-child(1) { left: 10px; bottom: 28px; transform: rotate(-35deg); }
+.vu-meter-70s .meter-scale span:nth-child(2) { left: 22px; bottom: 40px; transform: rotate(-20deg); }
+.vu-meter-70s .meter-scale span:nth-child(3) { left: 40px; bottom: 47px; transform: rotate(-8deg); }
+.vu-meter-70s .meter-scale span:nth-child(4) { left: 50%; bottom: 50px; transform: translateX(-50%); }
+.vu-meter-70s .meter-scale span:nth-child(5) { right: 8px; bottom: 40px; transform: rotate(20deg); }
 
 .vu-meter-70s .meter-scale span.danger {
     color: #cc0000;
+    font-weight: 700;
 }
 
-.vu-meter-70s .meter-needle {
+/* Arc scale line with tick marks */
+.vu-meter-70s .meter-face::before {
+    content: '';
     position: absolute;
-    bottom: 10px;
+    bottom: 8px;
     left: 50%;
-    width: 2px;
-    height: 50px;
-    background: linear-gradient(180deg, #cc0000 0%, #ff3333 100%);
-    transform-origin: bottom center;
-    transform: rotate(-45deg);
-    transition: transform 0.1s ease-out;
-    box-shadow: 0 0 3px rgba(0,0,0,0.3);
+    width: 90px;
+    height: 45px;
+    margin-left: -45px;
+    border: 1px solid #333;
+    border-bottom: none;
+    border-radius: 45px 45px 0 0;
+    background: transparent;
 }
 
-.radio-70s.power-off .vu-meter-70s .meter-needle {
-    transform: rotate(-45deg);
+/* Red danger zone on arc */
+.vu-meter-70s .meter-scale::before {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    width: 90px;
+    height: 45px;
+    margin-left: -45px;
+    border: 2px solid transparent;
+    border-top: 2px solid #cc0000;
+    border-right: 2px solid #cc0000;
+    border-bottom: none;
+    border-radius: 45px 45px 0 0;
+    clip-path: polygon(75% 0, 100% 0, 100% 100%, 60% 100%);
 }
 
-.vu-meter-70s .meter-label {
+/* Pivot point */
+.vu-meter-70s .meter-face::after {
+    content: '';
     position: absolute;
     bottom: 5px;
     left: 50%;
+    width: 6px;
+    height: 6px;
+    margin-left: -3px;
+    background: radial-gradient(circle, #666 0%, #222 100%);
+    border-radius: 50%;
+    z-index: 10;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+/* The needle */
+.vu-meter-70s .meter-needle {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    width: 1px;
+    height: 42px;
+    background: linear-gradient(180deg, 
+        #111 0%, 
+        #222 60%, 
+        #cc0000 85%, 
+        #ff4444 100%);
+    transform-origin: bottom center;
+    transform: rotate(-45deg);
+    transition: transform 0.12s ease-out;
+    z-index: 5;
+    margin-left: -0.5px;
+}
+
+/* VU text label */
+.vu-meter-70s .meter-face .vu-text {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
     transform: translateX(-50%);
-    font-size: 0.7rem;
+    font-size: 6px;
     color: #555;
     font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Channel label below meter */
+.vu-meter-70s .meter-label {
+    margin-top: 4px;
+    font-size: 0.65rem;
+    color: #b8860b;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* ========== POWER OFF STATE - ONLY METER FACE DIMS ========== */
+.radio-70s.power-off .vu-meter-70s .meter-face {
+    background: linear-gradient(180deg, #e8e5d8 0%, #d5d0bc 30%, #c8c2a8 100%);
+    box-shadow: 
+        inset 0 0 15px rgba(0,0,0,0.15),
+        inset 0 -2px 5px rgba(0,0,0,0.08),
+        0 2px 4px rgba(0,0,0,0.4);
+}
+
+.radio-70s.power-off .vu-meter-70s .meter-needle {
+    transform: rotate(-45deg) !important;
+    transition: transform 0.6s ease-out;
 }
 
 /* Frequency Dial Section */
