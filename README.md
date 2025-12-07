@@ -16,7 +16,7 @@ A nostalgic web application that lets you experience radio broadcasting from dif
 - **Visual Effects** - Disco lights (70s), lava lamp effects (80s), and era-specific backgrounds
 - **Continuous Broadcasting** - Stations continue playing even when you switch or turn off the radio
 
-## 🚀Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -145,7 +145,7 @@ This project is for educational and personal use.
 
 - Inspired by Back to the Future's DeLorean time machine
 - Billboard chart data from historical records
-- Built for the hackathon with ❤️
+- Built for the hackathon with 
 
 ---
 
