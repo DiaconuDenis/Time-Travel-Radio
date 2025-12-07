@@ -320,7 +320,7 @@
 .vu-meters-70s {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 20px;
     margin-bottom: 15px;
 }
 
@@ -331,8 +331,8 @@
 }
 
 .vu-meter-70s .meter-face {
-    width: 120px;
-    height: 65px;
+    width: 160px;
+    height: 85px;
     background: 
         radial-gradient(ellipse 80% 50% at 50% 90%, rgba(255,200,100,0.3) 0%, transparent 50%),
         linear-gradient(180deg, #fffef5 0%, #f5f0dc 30%, #ebe5c8 100%);
@@ -366,17 +366,17 @@
 /* Individual scale numbers positioned along arc */
 .vu-meter-70s .meter-scale span {
     position: absolute;
-    font-size: 7px;
+    font-size: 8px;
     color: #222;
     font-weight: 600;
     font-family: 'Arial Narrow', Arial, sans-serif;
 }
 
-.vu-meter-70s .meter-scale span:nth-child(1) { left: 10px; bottom: 28px; transform: rotate(-35deg); }
-.vu-meter-70s .meter-scale span:nth-child(2) { left: 22px; bottom: 40px; transform: rotate(-20deg); }
-.vu-meter-70s .meter-scale span:nth-child(3) { left: 40px; bottom: 47px; transform: rotate(-8deg); }
-.vu-meter-70s .meter-scale span:nth-child(4) { left: 50%; bottom: 50px; transform: translateX(-50%); }
-.vu-meter-70s .meter-scale span:nth-child(5) { right: 8px; bottom: 40px; transform: rotate(20deg); }
+.vu-meter-70s .meter-scale span:nth-child(1) { left: 12px; bottom: 36px; transform: rotate(-35deg); }
+.vu-meter-70s .meter-scale span:nth-child(2) { left: 30px; bottom: 52px; transform: rotate(-20deg); }
+.vu-meter-70s .meter-scale span:nth-child(3) { left: 52px; bottom: 62px; transform: rotate(-8deg); }
+.vu-meter-70s .meter-scale span:nth-child(4) { left: 50%; bottom: 66px; transform: translateX(-50%); }
+.vu-meter-70s .meter-scale span:nth-child(5) { right: 10px; bottom: 52px; transform: rotate(20deg); }
 
 .vu-meter-70s .meter-scale span.danger {
     color: #cc0000;
@@ -387,14 +387,14 @@
 .vu-meter-70s .meter-face::before {
     content: '';
     position: absolute;
-    bottom: 8px;
+    bottom: 10px;
     left: 50%;
-    width: 90px;
-    height: 45px;
-    margin-left: -45px;
+    width: 120px;
+    height: 60px;
+    margin-left: -60px;
     border: 1px solid #333;
     border-bottom: none;
-    border-radius: 45px 45px 0 0;
+    border-radius: 60px 60px 0 0;
     background: transparent;
 }
 
@@ -402,16 +402,16 @@
 .vu-meter-70s .meter-scale::before {
     content: '';
     position: absolute;
-    bottom: 8px;
+    bottom: 10px;
     left: 50%;
-    width: 90px;
-    height: 45px;
-    margin-left: -45px;
+    width: 120px;
+    height: 60px;
+    margin-left: -60px;
     border: 2px solid transparent;
     border-top: 2px solid #cc0000;
     border-right: 2px solid #cc0000;
     border-bottom: none;
-    border-radius: 45px 45px 0 0;
+    border-radius: 60px 60px 0 0;
     clip-path: polygon(75% 0, 100% 0, 100% 100%, 60% 100%);
 }
 
@@ -419,11 +419,11 @@
 .vu-meter-70s .meter-face::after {
     content: '';
     position: absolute;
-    bottom: 5px;
+    bottom: 6px;
     left: 50%;
-    width: 6px;
-    height: 6px;
-    margin-left: -3px;
+    width: 8px;
+    height: 8px;
+    margin-left: -4px;
     background: radial-gradient(circle, #666 0%, #222 100%);
     border-radius: 50%;
     z-index: 10;
@@ -433,10 +433,10 @@
 /* The needle */
 .vu-meter-70s .meter-needle {
     position: absolute;
-    bottom: 8px;
+    bottom: 10px;
     left: 50%;
-    width: 1px;
-    height: 42px;
+    width: 1.5px;
+    height: 55px;
     background: linear-gradient(180deg, 
         #111 0%, 
         #222 60%, 
@@ -446,16 +446,16 @@
     transform: rotate(-45deg);
     transition: transform 0.12s ease-out;
     z-index: 5;
-    margin-left: -0.5px;
+    margin-left: -0.75px;
 }
 
 /* VU text label */
 .vu-meter-70s .meter-face .vu-text {
     position: absolute;
-    bottom: 12px;
+    bottom: 14px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 6px;
+    font-size: 7px;
     color: #555;
     font-weight: bold;
     letter-spacing: 1px;
@@ -463,11 +463,11 @@
 
 /* Channel label below meter */
 .vu-meter-70s .meter-label {
-    margin-top: 4px;
-    font-size: 0.65rem;
-    color: #b8860b;
+    margin-top: 5px;
+    font-size: 0.75rem;
+    color: #2a1f14;
     font-weight: bold;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
 }
 
 /* ========== POWER OFF STATE - ONLY METER FACE DIMS ========== */
