@@ -4,7 +4,7 @@ A nostalgic web application that lets you experience radio broadcasting from dif
 
 # Contributors
 
-This project was developed during This project was made during Deutsche Bank's challenge at HackITall by the following team members, with equal contributions:
+This project was made during Deutsche Bank's challenge at HackITall by the following team members, with equal contributions:
 
 - Denis Gabriel Diaconu – https://github.com/DiaconuDenis
 - Erol Andrei Toma – https://github.com/Eroaleee
