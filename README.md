@@ -8,7 +8,7 @@ This project was made during Deutsche Bank's challenge at HackITall by the follo
 
 - Denis Gabriel Diaconu – https://github.com/DiaconuDenis
 - Erol Andrei Toma – https://github.com/Eroaleee
-- Posea Yarina Nicoleta – https://github.com/yarina21
+- Posea Yarina-Nicoleta – https://github.com/yarina21
 
 
 ![Time Travel Radio](frontend/assets/retro_radio.ico)
