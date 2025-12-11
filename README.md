@@ -37,7 +37,7 @@ The following members contributed equally:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Eroaleee/Time-Travel-Radio.git
+   git clone https://github.com/DiaconuDenis/Time-Travel-Radio.git
    cd Time-Travel-Radio
    ```
 
